@@ -69,6 +69,7 @@ def create_source_infos(
     shard_len_s: float,
     num_shards_per_file: int = -1,
     start_shard_idx: int = 0,
+    bucket: str = None,
 ) -> Sequence[SourceInfo]:
   """Expand source file patterns into a list of SourceInfos.
 
@@ -82,10 +83,17 @@ def create_source_infos(
   Returns:
     Sequence of SourceInfo objects.
   """
-  source_files = []
-  for pattern in source_file_patterns:
-    for source_file in epath.Path('').glob(pattern):
-      source_files.append(source_file)
+  
+  if bucket is not None:
+    source_files = []
+    for pattern in source_file_patterns:
+      for source_file in epath.Path(bucket).glob(pattern):
+        source_files.append(source_file)
+  else:
+    source_files = []
+    for pattern in source_file_patterns:
+      for source_file in epath.Path('').glob(pattern):
+        source_files.append(source_file)
 
   source_file_splits = []
   if shard_len_s <= 0:
