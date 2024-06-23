@@ -27,9 +27,9 @@ def get_config() -> config_dict.ConfigDict:
   # Attention-based 5s model.
   config = config_dict.ConfigDict()
 
-  config.output_dir = ''
-  config.source_file_patterns = []
-  model_checkpoint_path = ''
+  config.output_dir = 'embeddings_beam'
+  config.bucket = 'gs://bird-ml/caples-test-2023'
+  config.source_file_patterns = ['Data/*.wav'] # TODO: make into params
 
   config.shard_len_s = -1
   config.num_shards_per_file = -1
@@ -45,7 +45,8 @@ def get_config() -> config_dict.ConfigDict:
       'file_id_depth': 1,
       'model_key': 'taxonomy_model_tf',
       'model_config': {
-          'model_path': model_checkpoint_path,
+          'tfhub_version': 8,
+          'model_path': '',
           'window_size_s': 5.0,
           'hop_size_s': 5.0,
           'sample_rate': 32000,
